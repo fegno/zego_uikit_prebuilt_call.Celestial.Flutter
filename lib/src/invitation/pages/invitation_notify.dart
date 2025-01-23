@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:celestial/imports_bindings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -49,60 +50,63 @@ class _ZegoCallInvitationNotifyDialogState extends State<ZegoCallInvitationNotif
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: widget.config?.padding ?? EdgeInsets.symmetric(horizontal: 24.zW),
-      width: widget.config?.width ?? 718.zW,
-      height: widget.config?.height ?? 160.zH,
-      decoration: widget.config?.decoration ??
-          BoxDecoration(
-            color: const Color(0xff333333).withOpacity(0.8),
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-      child: widget.config?.builder?.call(
-            widget.invitationData,
-          ) ??
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ValueListenableBuilder(
-                valueListenable: ZegoUIKitUserPropertiesNotifier(
-                  widget.invitationData.inviter ?? ZegoUIKitUser.empty(),
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24.zW, vertical: 24.zH),
+        width: widget.config?.width ?? 718.zW,
+        // height: widget.config?.height ?? 160.zH,
+        decoration: widget.config?.decoration ??
+            BoxDecoration(
+              color: AppColors.light,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+        child: widget.config?.builder?.call(
+              widget.invitationData,
+            ) ??
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: ZegoUIKitUserPropertiesNotifier(
+                    widget.invitationData.inviter ?? ZegoUIKitUser.empty(),
+                  ),
+                  builder: (context, _, __) {
+                    return Container(
+                      width: 84.zR,
+                      height: 84.zR,
+                      decoration: const BoxDecoration(color: Color(0xffDBDDE3), shape: BoxShape.circle),
+                      child: widget.avatarBuilder?.call(
+                            context,
+                            Size(84.zR, 84.zR),
+                            widget.invitationData.inviter,
+                            {},
+                          ) ??
+                          circleName(widget.invitationData.inviter?.name ?? ''),
+                    );
+                  },
                 ),
-                builder: (context, _, __) {
-                  return Container(
-                    width: 84.zR,
-                    height: 84.zR,
-                    decoration: const BoxDecoration(color: Color(0xffDBDDE3), shape: BoxShape.circle),
-                    child: widget.avatarBuilder?.call(
-                          context,
-                          Size(84.zR, 84.zR),
-                          widget.invitationData.inviter,
-                          {},
-                        ) ??
-                        circleName(widget.invitationData.inviter?.name ?? ''),
-                  );
-                },
-              ),
-              SizedBox(width: 26.zW),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  userName(),
-                  SizedBox(height: 7.zH),
-                  subtitle(),
-                ],
-              ),
-              const Expanded(child: SizedBox()),
-              ...widget.declineButtonConfig.visible
-                  ? [
-                      declineButton(),
-                      SizedBox(width: 40.zW),
-                    ]
-                  : [],
-              ...widget.acceptButtonConfig.visible ? [acceptButton()] : [],
-            ],
-          ),
+                SizedBox(width: 26.zW),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    userName(),
+                    SizedBox(height: 7.zH),
+                    subtitle(),
+                  ],
+                ),
+                const Expanded(child: SizedBox()),
+                ...widget.declineButtonConfig.visible
+                    ? [
+                        declineButton(),
+                        SizedBox(width: 40.zW),
+                      ]
+                    : [],
+                ...widget.acceptButtonConfig.visible ? [acceptButton()] : [],
+              ],
+            ),
+      ),
     );
   }
 
@@ -133,12 +137,7 @@ class _ZegoCallInvitationNotifyDialogState extends State<ZegoCallInvitationNotif
             .replaceFirst(param_1, widget.invitationData.inviter?.name ?? ''),
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 36.0.zR,
-          fontWeight: FontWeight.w500,
-          decoration: TextDecoration.none,
-        ),
+        style: AppStyles.text14Px.w500.dark,
       ),
     );
   }
@@ -153,12 +152,7 @@ class _ZegoCallInvitationNotifyDialogState extends State<ZegoCallInvitationNotif
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20.0.zR,
-          fontWeight: FontWeight.w400,
-          decoration: TextDecoration.none,
-        ),
+        style: AppStyles.text12Px.w400.dark,
       ),
     );
   }
