@@ -20,9 +20,9 @@ dependencies:
 
   zego_uikit:
     path: ../zego_uikit.Celestial.Flutter
+  zego_uikit_signaling_plugin:
+    path: ../zego_uikit_signaling_plugin.Celestial.Fluttter
   zego_plugin_adapter: ^2.13.5
-  zego_uikit_signaling_plugin: ^2.8.8
-
   zego_zpns: ^2.6.0+3
   zego_callkit: ^1.0.0+4
 
