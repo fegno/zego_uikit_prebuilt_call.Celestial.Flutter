@@ -19,9 +19,11 @@ dependencies:
     sdk: flutter
 
   zego_uikit:
-    path: ../zego_uikit.Celestial.Flutter
+    git:
+      url: https://github.com/fegno/zego_uikit.Celestial.Flutter.git
   zego_uikit_signaling_plugin:
-    path: ../zego_uikit_signaling_plugin.Celestial.Fluttter
+    git:
+      url: https://github.com/fegno/zego_uikit_signaling_plugin.Celestial.Fluttter.git
   zego_plugin_adapter: ^2.13.5
   zego_zpns: ^2.6.0+3
   zego_callkit: ^1.0.0+4
@@ -43,7 +45,9 @@ dependencies:
   flutter_callkit_incoming_yoer: ^2.0.4+1
   floating: ^5.0.1
   celestial:
-    path: ../../
+    git:
+      url: https://github.com/fegno/Celestial.Flutter.git
+      ref: master
 
 dependency_overrides:
   web: any
