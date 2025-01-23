@@ -154,8 +154,7 @@ Future<void> onBackgroundMessageReceived(ZPNsMessage message) async {
     return;
   }
 
-  final registeredIsolatePort =
-      IsolateNameServer.lookupPortByName(backgroundMessageIsolatePortName);
+  final registeredIsolatePort = IsolateNameServer.lookupPortByName(backgroundMessageIsolatePortName);
   final isAppRunning = null != registeredIsolatePort;
   ZegoLoggerService.logInfo(
     'isolate: ${registeredIsolatePort?.hashCode}, isAppRunning:$isAppRunning',
@@ -270,19 +269,16 @@ Future<void> _onBackgroundMessageReceived({
       subTag: 'offline',
     );
   }
-  final isAdvanceMode =
-      ZegoUIKitAdvanceInvitationSendProtocol.typeOf(payloadMap);
+  final isAdvanceMode = ZegoUIKitAdvanceInvitationSendProtocol.typeOf(payloadMap);
   ZegoLoggerService.logInfo(
     'isAdvanceMode:$isAdvanceMode',
     tag: 'call-invitation',
     subTag: 'offline',
   );
 
-  final operationType = BackgroundMessageTypeExtension.fromText(
-      payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '');
+  final operationType = BackgroundMessageTypeExtension.fromText(payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '');
 
-  final handlerInfoJson =
-      await getPreferenceString(serializationKeyHandlerInfo);
+  final handlerInfoJson = await getPreferenceString(serializationKeyHandlerInfo);
   ZegoLoggerService.logInfo(
     'parsing handler info:$handlerInfoJson',
     tag: 'call-invitation',
@@ -295,8 +291,7 @@ Future<void> _onBackgroundMessageReceived({
     subTag: 'offline',
   );
 
-  if (BackgroundMessageType.textMessage == operationType ||
-      BackgroundMessageType.mediaMessage == operationType) {
+  if (BackgroundMessageType.textMessage == operationType || BackgroundMessageType.mediaMessage == operationType) {
     _onBackgroundIMMessageReceived(
       messageTitle: messageTitle,
       messageExtras: messageExtras,
@@ -310,7 +305,7 @@ Future<void> _onBackgroundMessageReceived({
   }
 
   /// operation type is empty, is send/cancel request
-  _onBackgroundCallMessageReceived(
+  onBackgroundCallMessageReceived(
     isAdvanceMode: isAdvanceMode,
     messageTitle: messageTitle,
     messageExtras: messageExtras,
@@ -351,8 +346,7 @@ Future<void> _onBackgroundIMMessageReceived({
     subTag: 'offline',
   );
 
-  var channelID =
-      handlerInfo?.androidMessageChannelID ?? defaultMessageChannelID;
+  var channelID = handlerInfo?.androidMessageChannelID ?? defaultMessageChannelID;
   if (channelID.isEmpty) {
     channelID = defaultMessageChannelID;
   }
@@ -387,7 +381,8 @@ Future<void> _onBackgroundIMMessageReceived({
   );
 }
 
-Future<void> _onBackgroundCallMessageReceived({
+@pragma('vm:entry-point')
+Future<void> onBackgroundCallMessageReceived({
   required bool isAdvanceMode,
   required String messageTitle,
   required Map<String, Object?> messageExtras,
@@ -396,8 +391,7 @@ Future<void> _onBackgroundCallMessageReceived({
   required Map<String, dynamic> payloadMap,
   required HandlerPrivateInfo? handlerInfo,
 }) async {
-  final operationType = BackgroundMessageTypeExtension.fromText(
-      payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '');
+  final operationType = BackgroundMessageTypeExtension.fromText(payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '');
 
   ZegoLoggerService.logInfo(
     'call message received, '
@@ -424,8 +418,7 @@ Future<void> _onBackgroundCallMessageReceived({
     ///   },
     ///   "call_id": 4172113646365410763
     /// }
-    final callID =
-        payloadMap[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
+    final callID = payloadMap[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
     await _onBackgroundInvitationCanceled(callID);
 
     /// when offline is cancelled, you will receive two notifications: one is
@@ -460,7 +453,7 @@ Future<void> _onBackgroundCallMessageReceived({
       );
     }
 
-    await _onBackgroundOfflineCall(
+    await onBackgroundOfflineCall(
       isAdvanceMode: isAdvanceMode,
       messageExtras: messageExtras,
       payloadMap: payloadMap,
@@ -498,7 +491,8 @@ Future<void> _onBackgroundInvitationCanceled(String callID) async {
   });
 }
 
-Future<void> _onBackgroundOfflineCall({
+@pragma('vm:entry-point')
+Future<void> onBackgroundOfflineCall({
   required bool isAdvanceMode,
   required Map<String, Object?> messageExtras,
   required Map<String, dynamic> payloadMap,
@@ -550,8 +544,7 @@ Future<void> _onBackgroundOfflineCall({
   // payload: {"inviter_id":"870125","inviter_name":"user_870125","type":0,"data":"{\"call_id\":\"call_870125_1715156717811\",\"invitees\":[{\"user_id\":\"946042\",\"user_name\":\"user_946042\"}],\"timeout\":60,\"timestamp\":1715156716097,\"custom_data\":\"\"}"}, call_id: 8827488227325211473},
   // payloadMap:{inviter_id: 870125, inviter_name: user_870125, type: 0, data: {"call_id":"call_870125_1715156717811","invitees":[{"user_id":"946042","user_name":"user_946042"}],"timeout":60,""custom_data":""}}, }  {08/05/2024 16:25:36}  {INFO}
 
-  final invitationID =
-      messageExtras[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
+  final invitationID = messageExtras[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
 
   ZegoLoggerService.logInfo(
     'background offline call, '
@@ -564,8 +557,7 @@ Future<void> _onBackgroundOfflineCall({
   String payloadCustomData = '';
   int invitationType = -1;
   if (isAdvanceMode) {
-    final sendProtocol =
-        ZegoUIKitAdvanceInvitationSendProtocol.fromJson(payloadMap);
+    final sendProtocol = ZegoUIKitAdvanceInvitationSendProtocol.fromJson(payloadMap);
 
     ZegoLoggerService.logInfo(
       'advance sendProtocol:$sendProtocol',
@@ -591,13 +583,11 @@ Future<void> _onBackgroundOfflineCall({
   }
 
   ///
-  final callType = ZegoCallTypeExtension.mapValue[invitationType] ??
-      ZegoCallInvitationType.voiceCall;
-  final callSendRequestProtocol =
-      ZegoCallInvitationSendRequestProtocol.fromJson(payloadCustomData);
+  final callType = ZegoCallTypeExtension.mapValue[invitationType] ?? ZegoCallInvitationType.voiceCall;
+  final callSendRequestProtocol = ZegoCallInvitationSendRequestProtocol.fromJson(payloadCustomData);
 
   final signalingSubscriptions = <StreamSubscription<dynamic>>[];
-  _listenFlutterCallkitIncomingEvent(
+  listenFlutterCallkitIncomingEvent(
     isAdvanceMode: isAdvanceMode,
     invitationID: invitationID,
     inviter: inviter,
@@ -641,7 +631,8 @@ Future<void> _onBackgroundOfflineCall({
   }
 }
 
-void _listenFlutterCallkitIncomingEvent({
+@pragma('vm:entry-point')
+void listenFlutterCallkitIncomingEvent({
   required bool isAdvanceMode,
   required String invitationID,
   required ZegoUIKitUser inviter,
@@ -652,21 +643,18 @@ void _listenFlutterCallkitIncomingEvent({
   required ReceivePort backgroundPort,
   required HandlerPrivateInfo? handlerInfo,
 }) {
-  flutterCallkitIncomingStreamSubscription =
-      FlutterCallkitIncoming.onEvent.listen((CallEvent? event) async {
+  flutterCallkitIncomingStreamSubscription = FlutterCallkitIncoming.onEvent.listen((CallEvent? event) async {
     // check isolate
     // After receiving the offline pop-up window,
     // if the user directly clicks the app icon to open the app, the main isolate will register the desired isolate
     // to the IsolateNameServer. So here we can use this to determine whether we need to ignore the old event.
-    final lookup =
-        IsolateNameServer.lookupPortByName(backgroundMessageIsolatePortName);
+    final lookup = IsolateNameServer.lookupPortByName(backgroundMessageIsolatePortName);
     ZegoLoggerService.logInfo(
       'isolate: FlutterCallkitIncoming.onEvent, lookupPortResult(${lookup?.hashCode}),backgroundPort(${backgroundPort.hashCode}),backgroundPort!.sendPort(${backgroundPort.sendPort.hashCode})',
       tag: 'call-invitation',
       subTag: 'offline',
     );
-    if ((lookup != null) &&
-        (lookup.hashCode != backgroundPort.sendPort.hashCode)) {
+    if ((lookup != null) && (lookup.hashCode != backgroundPort.sendPort.hashCode)) {
       ZegoLoggerService.logWarn(
         'isolate: isolate changed, cause of app opened! ignore this event',
         tag: 'call-invitation',
@@ -709,9 +697,7 @@ void _listenFlutterCallkitIncomingEvent({
         await clearOfflineCallKitCallID();
 
         if (isAdvanceMode) {
-          await ZegoUIKit()
-              .getSignalingPlugin()
-              .refuseAdvanceInvitationByInvitationID(
+          await ZegoUIKit().getSignalingPlugin().refuseAdvanceInvitationByInvitationID(
                 invitationID: invitationID,
                 data: ZegoCallInvitationRejectRequestProtocol(
                   reason: ZegoCallInvitationProtocolKey.refuseByDecline,
@@ -770,6 +756,7 @@ void _listenFlutterCallkitIncomingEvent({
   });
 }
 
+@pragma('vm:entry-point')
 void _listenSignalingEvents(
   List<StreamSubscription<dynamic>> signalingSubscriptions, {
   required HandlerPrivateInfo? handlerInfo,
@@ -781,7 +768,6 @@ void _listenSignalingEvents(
       tag: 'call-invitation',
       subTag: 'offline',
     );
-
     return;
   }
 
@@ -789,27 +775,16 @@ void _listenSignalingEvents(
 
   if (isAdvanceMode) {
     signalingSubscriptions
-      ..add(ZegoUIKit()
-          .getSignalingPlugin()
-          .getAdvanceInvitationCanceledStream()
-          .listen(_onInvitationCanceled))
-      ..add(ZegoUIKit()
-          .getSignalingPlugin()
-          .getAdvanceInvitationTimeoutStream()
-          .listen(_onInvitationTimeout));
+      ..add(ZegoUIKit().getSignalingPlugin().getAdvanceInvitationCanceledStream().listen(_onInvitationCanceled))
+      ..add(ZegoUIKit().getSignalingPlugin().getAdvanceInvitationTimeoutStream().listen(_onInvitationTimeout));
   } else {
     signalingSubscriptions
-      ..add(ZegoUIKit()
-          .getSignalingPlugin()
-          .getInvitationCanceledStream()
-          .listen(_onInvitationCanceled))
-      ..add(ZegoUIKit()
-          .getSignalingPlugin()
-          .getInvitationTimeoutStream()
-          .listen(_onInvitationTimeout));
+      ..add(ZegoUIKit().getSignalingPlugin().getInvitationCanceledStream().listen(_onInvitationCanceled))
+      ..add(ZegoUIKit().getSignalingPlugin().getInvitationTimeoutStream().listen(_onInvitationTimeout));
   }
 }
 
+@pragma('vm:entry-point')
 void _onInvitationTimeout(Map<String, dynamic> params) async {
   ZegoLoggerService.logInfo(
     'params:$params, ',
@@ -823,8 +798,7 @@ void _onInvitationTimeout(Map<String, dynamic> params) async {
 }
 
 Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
-  final handlerInfoJson =
-      await getPreferenceString(serializationKeyHandlerInfo);
+  final handlerInfoJson = await getPreferenceString(serializationKeyHandlerInfo);
   ZegoLoggerService.logInfo(
     'parsing handler info:$handlerInfoJson',
     tag: 'call-invitation',
@@ -848,13 +822,10 @@ Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
   }
 
   final String data = params['data']!; // extended field
-  final callType =
-      ZegoCallTypeExtension.mapValue[params['type'] as int? ?? 0] ??
-          ZegoCallInvitationType.voiceCall;
+  final callType = ZegoCallTypeExtension.mapValue[params['type'] as int? ?? 0] ?? ZegoCallInvitationType.voiceCall;
   final invitationID = params['invitation_id'] as String? ?? '';
 
-  final sendRequestProtocol =
-      ZegoCallInvitationSendRequestProtocol.fromJson(data);
+  final sendRequestProtocol = ZegoCallInvitationSendRequestProtocol.fromJson(data);
 
   var inviter = ZegoUIKitUser.empty();
   if (params['inviter'] is ZegoUIKitUser) {
@@ -864,20 +835,16 @@ Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
   }
   inviter.name = sendRequestProtocol.inviterName;
 
-  var channelID =
-      handlerInfo?.androidMissedCallChannelID ?? defaultMissedCallChannelKey;
+  var channelID = handlerInfo?.androidMissedCallChannelID ?? defaultMissedCallChannelKey;
   if (channelID.isEmpty) {
     channelID = defaultMissedCallChannelKey;
   }
 
   final groupMissedCallContent = ZegoCallInvitationType.videoCall == callType
-      ? handlerInfo?.missedGroupVideoCallNotificationContent ??
-          'Group Video Call'
-      : handlerInfo?.missedGroupAudioCallNotificationContent ??
-          'Group Audio Call';
-  final oneOnOneMissedCallContent = ZegoCallInvitationType.videoCall == callType
-      ? handlerInfo?.missedVideoCallNotificationContent ?? 'Video Call'
-      : handlerInfo?.missedAudioCallNotificationContent ?? 'Audio Call';
+      ? handlerInfo?.missedGroupVideoCallNotificationContent ?? 'Group Video Call'
+      : handlerInfo?.missedGroupAudioCallNotificationContent ?? 'Group Audio Call';
+  final oneOnOneMissedCallContent =
+      ZegoCallInvitationType.videoCall == callType ? handlerInfo?.missedVideoCallNotificationContent ?? 'Video Call' : handlerInfo?.missedAudioCallNotificationContent ?? 'Audio Call';
 
   final notificationID = Random().nextInt(2147483647);
   ZegoCallInvitationData callInvitationData = ZegoCallInvitationData(
@@ -895,8 +862,7 @@ Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
       id: notificationID,
       channelID: channelID,
       title: handlerInfo?.missedCallNotificationTitle ?? 'Missed Call',
-      content:
-          '${sendRequestProtocol.inviterName} ${sendRequestProtocol.invitees.length > 1 ? groupMissedCallContent : oneOnOneMissedCallContent}',
+      content: '${sendRequestProtocol.inviterName} ${sendRequestProtocol.invitees.length > 1 ? groupMissedCallContent : oneOnOneMissedCallContent}',
       vibrate: handlerInfo?.androidMissedCallVibrate ?? false,
       iconSource: ZegoCallInvitationNotificationManager.getIconSource(
         handlerInfo?.androidMissedCallIcon ?? '',
@@ -911,8 +877,7 @@ Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
           subTag: 'offline, missed call',
         );
 
-        await setOfflineMissedCallNotificationID(notificationID)
-            .then((_) async {
+        await setOfflineMissedCallNotificationID(notificationID).then((_) async {
           await ZegoUIKit().activeAppToForeground();
           await ZegoUIKit().requestDismissKeyguard();
         });
@@ -921,6 +886,7 @@ Future<void> _addMissedCallNotification(Map<String, dynamic> params) async {
   );
 }
 
+@pragma('vm:entry-point')
 Future<void> _onInvitationCanceled(Map<String, dynamic> params) async {
   var inviter = ZegoUIKitUser.empty();
   if (params['inviter'] is ZegoUIKitUser) {
@@ -992,9 +958,7 @@ Future<void> _installSignalingPlugin({
     tag: 'call-invitation',
     subTag: 'offline, install signaling plugin',
   );
-  await ZegoUIKit()
-      .getSignalingPlugin()
-      .enableNotifyWhenAppRunningInBackgroundOrQuit(
+  await ZegoUIKit().getSignalingPlugin().enableNotifyWhenAppRunningInBackgroundOrQuit(
         true,
         isIOSSandboxEnvironment: handlerInfo.isIOSSandboxEnvironment,
         enableIOSVoIP: handlerInfo.enableIOSVoIP,
@@ -1005,9 +969,7 @@ Future<void> _installSignalingPlugin({
 
         /// not need to get abs uri like ZegoNotificationManager.getSoundSource(handlerInfo.androidCallSound),
         /// zim will add prefix like ${android.resource://" + application.getPackageName() + androidSound}
-        androidSound: handlerInfo.androidCallSound.isEmpty
-            ? ''
-            : '/raw/${handlerInfo.androidCallSound}',
+        androidSound: handlerInfo.androidCallSound.isEmpty ? '' : '/raw/${handlerInfo.androidCallSound}',
       );
 }
 
@@ -1026,6 +988,7 @@ Future<void> _uninstallSignalingPlugin() async {
   ZegoUIKit().uninstallPlugins([ZegoUIKitSignalingPlugin()]);
 }
 
+@pragma('vm:entry-point')
 void _onThroughMessage(
   ZPNsMessage message,
 ) {
@@ -1041,13 +1004,11 @@ void _onThroughMessage(
 
   final payload = message.extras['payload'] as String? ?? '';
   final payloadMap = jsonDecode(payload) as Map<String, dynamic>;
-  final operationType =
-      payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '';
+  final operationType = payloadMap[ZegoCallInvitationProtocolKey.operationType] as String? ?? '';
 
   /// cancel invitation
   if (BackgroundMessageType.cancelInvitation.text == operationType) {
-    final callID =
-        payloadMap[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
+    final callID = payloadMap[ZegoCallInvitationProtocolKey.callID] as String? ?? '';
     _onBackgroundInvitationCanceled(callID);
   }
 }
