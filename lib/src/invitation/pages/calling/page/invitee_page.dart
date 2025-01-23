@@ -1,15 +1,9 @@
 // Flutter imports:
 import 'package:celestial/imports_bindings.dart';
-import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:zego_uikit/zego_uikit.dart';
 
 // Project imports:
-import 'package:zego_uikit_prebuilt_call/src/invitation/config.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/config.defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/inner_text.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/page/common.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/toolbar/invitee_bottom_toolbar.dart';
@@ -118,7 +112,6 @@ class ZegoCallingInviteeView extends StatelessWidget {
                 : (invitees.length > 1 ? innerText.outgoingGroupVoiceCallPageMessage : innerText.outgoingVoiceCallPageMessage))
             : SizedBox(height: 32.0.zR),
         SizedBox(height: 120.zR),
-        SizedBox(height: 280.zR),
         SizedBox.square(
           dimension: 200.zR,
           child: Stack(

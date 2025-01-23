@@ -18,7 +18,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  zego_uikit: ^2.28.0
+  zego_uikit:
+    path: ../zego_uikit.Celestial.Flutter
   zego_plugin_adapter: ^2.13.5
   zego_uikit_signaling_plugin: ^2.8.8
 

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:celestial/imports_bindings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -44,14 +45,8 @@ class ZegoInviteeCallingBottomToolBar extends StatefulWidget {
 }
 
 /// @nodoc
-class ZegoInviteeCallingBottomToolBarState
-    extends State<ZegoInviteeCallingBottomToolBar> {
-  TextStyle get buttonTextStyle => TextStyle(
-        color: Colors.white,
-        fontSize: 25.0.zR,
-        fontWeight: FontWeight.w400,
-        decoration: TextDecoration.none,
-      );
+class ZegoInviteeCallingBottomToolBarState extends State<ZegoInviteeCallingBottomToolBar> {
+  TextStyle get buttonTextStyle => AppStyles.text13Px.w400.kcolor(const Color(0xff8A8A8A));
 
   @override
   void initState() {
@@ -105,22 +100,18 @@ class ZegoInviteeCallingBottomToolBarState
       targetInvitationID: invitationID,
       // data customization is not supported
       data: const JsonEncoder().convert({
-        ZegoCallInvitationProtocolKey.reason:
-            ZegoCallInvitationProtocolKey.refuseByDecline,
+        ZegoCallInvitationProtocolKey.reason: ZegoCallInvitationProtocolKey.refuseByDecline,
       }),
       text: widget.callInvitationData.innerText.incomingCallPageDeclineButton,
       textStyle: widget.declineButtonConfig.textStyle ?? buttonTextStyle,
       icon: ButtonIcon(
         icon: widget.declineButtonConfig.icon ??
             Image(
-              image: ZegoCallImage.asset(
-                      InvitationStyleIconUrls.toolbarBottomDecline)
-                  .image,
+              image: ZegoCallImage.asset(InvitationStyleIconUrls.toolbarBottomDecline).image,
               fit: BoxFit.fill,
             ),
       ),
-      buttonSize:
-          widget.declineButtonConfig.size ?? Size(120.zR, 120.zR + 50.zR),
+      buttonSize: widget.declineButtonConfig.size ?? Size(120.zR, 120.zR + 50.zR),
       iconSize: widget.declineButtonConfig.iconSize ?? Size(108.zR, 108.zR),
       onPressed: (ZegoRefuseInvitationButtonResult result) {
         widget.pageManager.onLocalRefuseInvitation(
@@ -142,16 +133,13 @@ class ZegoInviteeCallingBottomToolBarState
       icon: ButtonIcon(
         icon: widget.acceptButtonConfig.icon ??
             Image(
-              image: ZegoCallImage.asset(
-                      imageURLByInvitationType(widget.invitationType))
-                  .image,
+              image: ZegoCallImage.asset(imageURLByInvitationType(widget.invitationType)).image,
               fit: BoxFit.fill,
             ),
       ),
       text: widget.callInvitationData.innerText.incomingCallPageAcceptButton,
       textStyle: widget.acceptButtonConfig.textStyle ?? buttonTextStyle,
-      buttonSize:
-          widget.acceptButtonConfig.size ?? Size(120.zR, 120.zR + 50.zR),
+      buttonSize: widget.acceptButtonConfig.size ?? Size(120.zR, 120.zR + 50.zR),
       iconSize: widget.acceptButtonConfig.iconSize ?? Size(108.zR, 108.zR),
       onPressed: (ZegoAcceptInvitationButtonResult result) {
         widget.pageManager.onLocalAcceptInvitation(
