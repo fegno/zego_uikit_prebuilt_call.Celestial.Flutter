@@ -108,13 +108,9 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
                   invitees: widget.invitees,
                   invitationType: widget.pageManager.invitationData.type,
                   customData: widget.pageManager.invitationData.customData,
-                  avatarBuilder: widget.callInvitationData
-                      .requireConfig(widget.pageManager.invitationData)
-                      .avatarBuilder,
-                  foregroundBuilder: widget
-                      .callInvitationData.uiConfig.inviter.foregroundBuilder,
-                  backgroundBuilder: widget
-                      .callInvitationData.uiConfig.inviter.backgroundBuilder,
+                  avatarBuilder: widget.callInvitationData.requireConfig(widget.pageManager.invitationData).avatarBuilder,
+                  foregroundBuilder: widget.callInvitationData.uiConfig.inviter.foregroundBuilder,
+                  backgroundBuilder: widget.callInvitationData.uiConfig.inviter.backgroundBuilder,
                 ))
             : (widget.callInvitationData.uiConfig.invitee.pageBuilder?.call(
                   context,
@@ -132,17 +128,11 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
                   invitees: widget.invitees,
                   invitationType: widget.pageManager.invitationData.type,
                   customData: widget.pageManager.invitationData.customData,
-                  avatarBuilder: widget.callInvitationData
-                      .requireConfig(widget.pageManager.invitationData)
-                      .avatarBuilder,
-                  foregroundBuilder: widget
-                      .callInvitationData.uiConfig.invitee.foregroundBuilder,
-                  backgroundBuilder: widget
-                      .callInvitationData.uiConfig.invitee.backgroundBuilder,
-                  acceptButtonConfig:
-                      widget.callInvitationData.uiConfig.invitee.acceptButton,
-                  declineButtonConfig:
-                      widget.callInvitationData.uiConfig.invitee.declineButton,
+                  avatarBuilder: widget.callInvitationData.requireConfig(widget.pageManager.invitationData).avatarBuilder,
+                  foregroundBuilder: widget.callInvitationData.uiConfig.invitee.foregroundBuilder,
+                  backgroundBuilder: widget.callInvitationData.uiConfig.invitee.backgroundBuilder,
+                  acceptButtonConfig: widget.callInvitationData.uiConfig.invitee.acceptButton,
+                  declineButtonConfig: widget.callInvitationData.uiConfig.invitee.declineButton,
                 ));
         view = SafeArea(
           child: invitationView,
@@ -174,8 +164,7 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
     );
 
     /// assign if not set
-    widget.callInvitationData.events?.onError ??=
-        widget.callInvitationData.invitationEvents?.onError;
+    widget.callInvitationData.events?.onError ??= widget.callInvitationData.invitationEvents?.onError;
 
     var callConfig = widget.callInvitationData.requireConfig(
       widget.pageManager.invitationData,
@@ -188,8 +177,7 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
     );
     if (!widget.pageManager.isGroupCall) {
       /// 1v1 call
-      final inviter =
-          widget.pageManager.invitationData.inviter ?? ZegoUIKitUser.empty();
+      final inviter = widget.pageManager.invitationData.inviter ?? ZegoUIKitUser.empty();
       if (!inviter.isEmpty() && inviter.id != ZegoUIKit().getLocalUser().id) {
         /// not local request
         if (callConfig.user.requiredUsers.users.isEmpty) {

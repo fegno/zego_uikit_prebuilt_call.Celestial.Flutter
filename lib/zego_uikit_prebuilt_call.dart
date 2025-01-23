@@ -19,5 +19,4 @@ export 'src/controller.dart';
 export 'src/defines.dart';
 
 export 'src/minimizing/export.dart';
-
 export 'src/deprecated/deprecated.dart';

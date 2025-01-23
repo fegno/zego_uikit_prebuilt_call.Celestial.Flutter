@@ -1,18 +1,12 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:celestial/imports_bindings.dart';
 
 // Package imports:
-import 'package:zego_uikit/zego_uikit.dart';
 
 // Project imports:
-import 'package:zego_uikit_prebuilt_call/src/invitation/config.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/config.defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/inner_text.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/page/common.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/toolbar/inviter_bottom_toolbar.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/toolbar/inviter_top_toolbar.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/pages/page_manager.dart';
 
 /// @nodoc
@@ -41,25 +35,38 @@ class ZegoCallingInviterView extends StatelessWidget {
   final ZegoCallingForegroundBuilder? foregroundBuilder;
   final ZegoCallingBackgroundBuilder? backgroundBuilder;
 
-  ZegoCallInvitationInviterUIConfig get config =>
-      callInvitationData.uiConfig.inviter;
+  ZegoCallInvitationInviterUIConfig get config => callInvitationData.uiConfig.inviter;
   ZegoCallInvitationInnerText get innerText => callInvitationData.innerText;
 
   @override
   Widget build(BuildContext context) {
-    return ZegoScreenUtilInit(
-      designSize: const Size(750, 1334),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return Stack(
-          children: [
-            backgroundView(context),
-            surface(context),
-            foreground(context),
-          ],
-        );
-      },
+    StatusBarTheme.setDarkStatusBarColor(
+      statusBarColor: context.theme.scaffoldBackgroundColor,
+    );
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        elevation: 0,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () {},
+        // ),
+        leading: const SizedBox.shrink(),
+      ),
+      body: ZegoScreenUtilInit(
+        designSize: const Size(750, 1334),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return Stack(
+            children: [
+              backgroundView(context),
+              surface(context),
+              foreground(context),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -69,72 +76,78 @@ class ZegoCallingInviterView extends StatelessWidget {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
-      return backgroundBuilder?.call(
-            context,
-            Size(constraints.maxWidth, constraints.maxHeight),
-            ZegoCallingBuilderInfo(
-              inviter: inviter,
-              invitees: invitees,
-              callType: invitationType,
-              customData: customData,
-            ),
-          ) ??
-          backgroundImage();
+      return Container(
+        width: constraints.maxWidth,
+        height: constraints.maxHeight,
+        color: context.theme.scaffoldBackgroundColor,
+      );
+      // return backgroundBuilder?.call(
+      //       context,
+      //       Size(constraints.maxWidth, constraints.maxHeight),
+      //       ZegoCallingBuilderInfo(
+      //         inviter: inviter,
+      //         invitees: invitees,
+      //         callType: invitationType,
+      //         customData: customData,
+      //       ),
+      //     ) ??
+      //     backgroundImage();
     });
   }
 
   Widget surface(BuildContext context) {
     final isVideo = ZegoCallInvitationType.videoCall == invitationType;
-
-    final firstInvitee =
-        invitees.isNotEmpty ? invitees.first : ZegoUIKitUser.empty();
+    final firstInvitee = invitees.isNotEmpty ? invitees.first : ZegoUIKitUser.empty();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (isVideo) const ZegoInviterCallingVideoTopToolBar() else Container(),
-        if (isVideo) SizedBox(height: 140.zH) else SizedBox(height: 228.zH),
-        SizedBox(
-          width: 200.zR,
-          height: 200.zR,
-          child: config.showAvatar
-              ? ValueListenableBuilder(
-                  valueListenable:
-                      ZegoUIKitUserPropertiesNotifier(firstInvitee),
-                  builder: (context, _, __) {
-                    return avatarBuilder?.call(
-                          context,
-                          Size(200.zR, 200.zR),
-                          firstInvitee,
-                          {},
-                        ) ??
-                        circleAvatar(firstInvitee.name);
-                  },
-                )
-              : Container(),
-        ),
-        SizedBox(height: config.spacingBetweenAvatarAndName ?? 10.zR),
+        // if (isVideo) const ZegoInviterCallingVideoTopToolBar() else Container(),
+        // if (isVideo) SizedBox(height: 140.zH) else SizedBox(height: 228.zH),
+        SizedBox(height: 14.zR),
         config.showCentralName
             ? centralName((isVideo
-                    ? (invitees.length > 1
-                        ? innerText.outgoingGroupVideoCallPageTitle
-                        : innerText.outgoingVideoCallPageTitle)
-                    : (invitees.length > 1
-                        ? innerText.outgoingGroupVoiceCallPageTitle
-                        : innerText.outgoingVoiceCallPageTitle))
+                    ? (invitees.length > 1 ? innerText.outgoingGroupVideoCallPageTitle : innerText.outgoingVideoCallPageTitle)
+                    : (invitees.length > 1 ? innerText.outgoingGroupVoiceCallPageTitle : innerText.outgoingVoiceCallPageTitle))
                 .replaceFirst(param_1, firstInvitee.name))
             : SizedBox(height: 59.zH),
-        SizedBox(height: config.spacingBetweenNameAndCallingText ?? 47.zR),
+        SizedBox(height: 24.zR),
         config.showCallingText
             ? callingText(isVideo
-                ? (invitees.length > 1
-                    ? innerText.outgoingGroupVideoCallPageMessage
-                    : innerText.outgoingVideoCallPageMessage)
-                : (invitees.length > 1
-                    ? innerText.outgoingGroupVoiceCallPageMessage
-                    : innerText.outgoingVoiceCallPageMessage))
+                ? (invitees.length > 1 ? innerText.outgoingGroupVideoCallPageMessage : innerText.outgoingVideoCallPageMessage)
+                : (invitees.length > 1 ? innerText.outgoingGroupVoiceCallPageMessage : innerText.outgoingVoiceCallPageMessage))
             : SizedBox(height: 32.0.zR),
-        const Expanded(child: SizedBox()),
+        SizedBox(height: 120.zR),
+        SizedBox.square(
+          dimension: 200.zR,
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              CustomPaint(
+                size: Size.square(200.zR),
+                painter: DashedCirclesPainter(
+                  1,
+                ),
+              ),
+              config.showAvatar
+                  ? ValueListenableBuilder(
+                      valueListenable: ZegoUIKitUserPropertiesNotifier(firstInvitee),
+                      builder: (context, _, __) {
+                        return avatarBuilder?.call(
+                              context,
+                              Size(200.zR, 200.zR),
+                              firstInvitee,
+                              {},
+                            ) ??
+                            circleAvatar(firstInvitee.name);
+                      },
+                    )
+                  : Container()
+            ],
+          ),
+        ),
+        const Spacer(),
         ZegoInviterCallingBottomToolBar(
           pageManager: pageManager,
           networkLoadingConfig: callInvitationData.config.networkLoading,

@@ -8,8 +8,7 @@ mixin ZegoCallControllerPIP {
 
 /// Here are the APIs related to audio video.
 class ZegoCallControllerPIPImpl with ZegoCallControllerPIPImplPrivate {
-  Future<ZegoPiPStatus> get status async =>
-      (await private.floating.pipStatus).toZego();
+  Future<ZegoPiPStatus> get status async => (await private.floating.pipStatus).toZego();
 
   Future<bool> get available async => await private.floating.isPipAvailable;
 

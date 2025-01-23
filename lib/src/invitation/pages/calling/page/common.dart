@@ -1,6 +1,7 @@
 // Dart imports:
 
 // Flutter imports:
+import 'package:celestial/imports_bindings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -15,8 +16,7 @@ Widget backgroundImage() {
     height: double.infinity,
     decoration: BoxDecoration(
       image: DecorationImage(
-        image:
-            ZegoCallImage.asset(InvitationStyleIconUrls.inviteBackground).image,
+        image: ZegoCallImage.asset(InvitationStyleIconUrls.inviteBackground).image,
         fit: BoxFit.fitHeight,
       ),
     ),
@@ -24,28 +24,22 @@ Widget backgroundImage() {
 }
 
 Widget centralName(String name) {
-  return SizedBox(
-    height: 59.zH,
-    child: Text(
-      name,
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 42.0.zR,
-        decoration: TextDecoration.none,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
+  return Text(
+    name,
+    style: AppStyles.text20Px.w600.kcolor(AppColors.primaryColor),
   );
 }
 
 Widget callingText(String text) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: 32.0.zR,
-      fontWeight: FontWeight.w400,
-      decoration: TextDecoration.none,
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    decoration: BoxDecoration(
+      color: AppColors.light,
+      borderRadius: BorderRadius.circular(44),
+    ),
+    child: Text(
+      'Calling...',
+      style: AppStyles.text12Px.w400.kcolor(AppColors.primaryColor),
     ),
   );
 }
