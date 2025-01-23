@@ -38,12 +38,10 @@ class ZegoCallInvitationNotifyDialog extends StatefulWidget {
   final ZegoAvatarBuilder? avatarBuilder;
 
   @override
-  State<ZegoCallInvitationNotifyDialog> createState() =>
-      _ZegoCallInvitationNotifyDialogState();
+  State<ZegoCallInvitationNotifyDialog> createState() => _ZegoCallInvitationNotifyDialogState();
 }
 
-class _ZegoCallInvitationNotifyDialogState
-    extends State<ZegoCallInvitationNotifyDialog> {
+class _ZegoCallInvitationNotifyDialogState extends State<ZegoCallInvitationNotifyDialog> {
   @override
   void dispose() {
     super.dispose();
@@ -52,8 +50,7 @@ class _ZegoCallInvitationNotifyDialogState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          widget.config?.padding ?? EdgeInsets.symmetric(horizontal: 24.zW),
+      padding: widget.config?.padding ?? EdgeInsets.symmetric(horizontal: 24.zW),
       width: widget.config?.width ?? 718.zW,
       height: widget.config?.height ?? 160.zH,
       decoration: widget.config?.decoration ??
@@ -75,8 +72,7 @@ class _ZegoCallInvitationNotifyDialogState
                   return Container(
                     width: 84.zR,
                     height: 84.zR,
-                    decoration: const BoxDecoration(
-                        color: Color(0xffDBDDE3), shape: BoxShape.circle),
+                    decoration: const BoxDecoration(color: Color(0xffDBDDE3), shape: BoxShape.circle),
                     child: widget.avatarBuilder?.call(
                           context,
                           Size(84.zR, 84.zR),
@@ -129,15 +125,11 @@ class _ZegoCallInvitationNotifyDialogState
       child: Text(
         (ZegoCallInvitationType.videoCall == widget.invitationData.type
                 ? (widget.invitationData.invitees.length > 1
-                    ? widget.callInvitationConfig.innerText
-                        .incomingGroupVideoCallDialogTitle
-                    : widget.callInvitationConfig.innerText
-                        .incomingVideoCallDialogTitle)
+                    ? widget.callInvitationConfig.innerText.incomingGroupVideoCallDialogTitle
+                    : widget.callInvitationConfig.innerText.incomingVideoCallDialogTitle)
                 : (widget.invitationData.invitees.length > 1
-                    ? widget.callInvitationConfig.innerText
-                        .incomingGroupVoiceCallDialogTitle
-                    : widget.callInvitationConfig.innerText
-                        .incomingVoiceCallDialogTitle))
+                    ? widget.callInvitationConfig.innerText.incomingGroupVoiceCallDialogTitle
+                    : widget.callInvitationConfig.innerText.incomingVoiceCallDialogTitle))
             .replaceFirst(param_1, widget.invitationData.inviter?.name ?? ''),
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.left,
@@ -185,8 +177,7 @@ class _ZegoCallInvitationNotifyDialogState
         icon: ButtonIcon(
           icon: widget.declineButtonConfig.icon ??
               Image(
-                image: ZegoCallImage.asset(InvitationStyleIconUrls.inviteReject)
-                    .image,
+                image: ZegoCallImage.asset(InvitationStyleIconUrls.inviteReject).image,
                 fit: BoxFit.fill,
               ),
         ),
@@ -200,12 +191,11 @@ class _ZegoCallInvitationNotifyDialogState
             result.message,
           );
         },
-        networkLoadingConfig:
-            widget.callInvitationConfig.config.networkLoading ??
-                ZegoNetworkLoadingConfig(
-                  enabled: true,
-                  progressColor: Colors.white,
-                ),
+        networkLoadingConfig: widget.callInvitationConfig.config.networkLoading ??
+            ZegoNetworkLoadingConfig(
+              enabled: true,
+              progressColor: Colors.white,
+            ),
       ),
     );
   }
@@ -237,12 +227,11 @@ class _ZegoCallInvitationNotifyDialogState
             result.message,
           );
         },
-        networkLoadingConfig:
-            widget.callInvitationConfig.config.networkLoading ??
-                ZegoNetworkLoadingConfig(
-                  enabled: true,
-                  progressColor: Colors.white,
-                ),
+        networkLoadingConfig: widget.callInvitationConfig.config.networkLoading ??
+            ZegoNetworkLoadingConfig(
+              enabled: true,
+              progressColor: Colors.white,
+            ),
       ),
     );
   }
@@ -256,21 +245,12 @@ class _ZegoCallInvitationNotifyDialogState
     }
   }
 
-  String invitationTypeString(
-      ZegoCallInvitationType invitationType, List<ZegoUIKitUser> invitees) {
+  String invitationTypeString(ZegoCallInvitationType invitationType, List<ZegoUIKitUser> invitees) {
     switch (invitationType) {
       case ZegoCallInvitationType.voiceCall:
-        return invitees.length > 1
-            ? (widget.callInvitationConfig.innerText
-                .incomingGroupVoiceCallDialogMessage)
-            : (widget
-                .callInvitationConfig.innerText.incomingVoiceCallDialogMessage);
+        return invitees.length > 1 ? (widget.callInvitationConfig.innerText.incomingGroupVoiceCallDialogMessage) : (widget.callInvitationConfig.innerText.incomingVoiceCallDialogMessage);
       case ZegoCallInvitationType.videoCall:
-        return invitees.length > 1
-            ? (widget.callInvitationConfig.innerText
-                .incomingGroupVideoCallDialogMessage)
-            : (widget
-                .callInvitationConfig.innerText.incomingVideoCallDialogMessage);
+        return invitees.length > 1 ? (widget.callInvitationConfig.innerText.incomingGroupVideoCallDialogMessage) : (widget.callInvitationConfig.innerText.incomingVideoCallDialogMessage);
     }
   }
 }
